@@ -29,10 +29,17 @@ fun! vkmap#print_lines(def)
   let l:lines = s:format_entries(l:entry)
   let l:lines = [l:header] + l:lines
   let l:line_index = 0
+  let l:wh = winheight(0)
   for line in l:lines
     call append(l:line_index, line)
     let l:line_index += 1
   endfor
+
+  while l:line_index < l:wh
+    call append(l:line_index, ' ')
+    let l:line_index += 1
+  endwhile
+
 
 endfun
 
@@ -112,3 +119,21 @@ fun! s:strng_cmp(s1, s2)
   endwhile
 
 endfun
+
+fun! vkmap#arm_repeat(def)
+  let s:arm = exists('a:def.key_can') ? a:def.key_can : a:def.key
+  let s:arm = s:arm . nr2char(getchar())
+endfun
+
+fun! vkmap#repeat()
+  let l:lookup = vkmap#util#lookup(s:arm)
+  if type(l:lookup) == 4
+    call vwm#open(l:lookup.lid)
+  else
+    let l:cmd = vkmap#util#get_mapping(s:arm)
+    if type(l:cmd) == 1
+      execute(l:cmd)
+    endif
+  endif
+endfun
+

@@ -1,16 +1,20 @@
-" Syntax highligting for vkmap filetype
-
 if exists("b:current_syntax")
   finish
 endif
 
-syn match vkOther '.'
+
+syntax sync fromstart
+
 syn match vkmapMap '\S' contained
 syn match vkMapB '\[\|\]' contained
-syn match vkmapBrac '\[[^\]]\+\]' contains=vkmapMap,vkmapB
+syn match vkmapBrac '\[[^\]]\+\]' contained contains=vkmapMap,vkmapB
+syn match vkmapGroup '+\S\+' contained
+syn match vkmapFile '.*' contains=vkmapBrac,vkmapGroup
 
-hi! link vkOther Comment
-hi! link vkmapMap Special
-hi! link vkMapB Character
+hi! def link vkmapFile Comment
+hi! def link vkmapMap Special
+hi! def link vkMapB Character
+hi! def link vkmapGroup Function
 
-"let b:current_syntax = 'vkmap'
+let b:current_syntax = 'vkmap'
+
