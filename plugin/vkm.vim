@@ -3,7 +3,10 @@
 if !exists('g:vkmap#menus')
   let g:vkmap#menus = []
 endif
-if !exists('g:vkmap#floating')
+if !exists('g:vkmap#col_width')
+  let g:vkmap#col_width = 18
+endif
+if !exists('g:vkmap#floating') && exists('*nvim_open_win')
   let g:vkmap#floating = 0
 endif
 " use vwm to handle window population

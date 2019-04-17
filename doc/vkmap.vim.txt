@@ -1,0 +1,63 @@
+*vwm.txt*
+                                                                        *vkmap*
+
+==============================================================================
+CONTENTS                                                       *vkmap-contents*
+  1. Commands..................................................|vkmap-commands|
+  2. Configuration........................................|vkmap-configuration|
+  3. Examples..................................................|vkmap-examples|
+==============================================================================
+COMMANDS                                                       *vkmap-commands*
+:VkmapReinit
+  After manual changes to g:vwm#layouts, call to re-normalize the dictionary.
+==============================================================================
+CONFIGURATION                                             *vkmap-configuration*
+
+g:vkmap#height                                                 *g:vkmap#height*
+  Height of menu popup.
+
+g:vkmap#col_width                                           *g:vkmap#col_width*
+  Width of each column cell.
+
+g:vkmap#outer_padding                                   *g:vkmap#outer_padding*
+  Space between menu window and columns
+
+g:vkmap#inner_padding                                   *g:vkmap#inner_padding*
+  Space between each column.
+
+g:vkmap#floating                                             *g:vkmap#floating*
+  Enables floating window layout on supported versions of Neovim.
+
+g:vkmap#menus                                                   *g:vkmap#menus*
+  A list of mappings to display on keypress. Each menu has the following
+  strucutre:     >
+    {
+      'key': string,
+      'maps': [dict]
+    }
+
+g:vkmap#menu.key                                             *g:vkmap#menu.key*
+  The key sequence that triggers this menu as it would be entered in the |map|
+  command.
+
+g:vkmap#menu.maps
+  A list of key mappings that can be reached by appending a character to
+  |g:vkmap#menu.key|. Each key map has the following stucture:    >
+    {
+      'key': char,
+      'dscpt': "A brief description"
+      'leader[optional]': int
+    }
+
+g:vkmap#map.key                                               *g:vkmap#map.key*
+  The character required to activate the represented mapping.
+
+g:vkmap#map.dscpt                                           *g:vkmap#map.dscpt*
+  A brief description of what the mapping does.
+
+g:vkmap#map.leader[default=0]
+  If true, the listing is assumed to open another vkmap menu and is
+  distinguised via syntax highlighting.
+==============================================================================
+EXAMPLES                                                       *vkmap-examples*
+//TODO - add examples
