@@ -74,9 +74,12 @@ fun! vkmap#arm_repeat(def)
 endfun
 
 fun! vkmap#repeat()
-  let l:lookup = vkmap#util#lookup(s:arm)
+  " Prevent endless recursion by mapping to an unprintable character which maps to the target
+  " mapping
+  let l:keys = substitute(s:arm, '<', '\\<', 'g')
   let l:cmd = vkmap#util#get_mapping(s:arm)
   if type(l:cmd) == 1
-    execute(l:cmd)
+    execute('nmap <buffer>  ' . s:arm)
+    call feedkeys('')
   endif
 endfun

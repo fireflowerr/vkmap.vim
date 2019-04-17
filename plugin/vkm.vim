@@ -91,12 +91,14 @@ fun! s:gen_layouts_reg()
   while l:i < l:l
 
     let l:def = g:vkmap#menus[l:i]
+    let l:height = exists('l:def.height') ? l:def.height : g:vkmap#height
+
     let l:layout = {}
     execute('let l:layout.name = "vkmap' . l:i . '"')
     let l:def.lid = l:layout.name
     let l:layout.cache = 0
     let l:bot = {
-          \  'sz': g:vkmap#height,
+          \  'sz': l:height,
           \  'set': ['nobl', 'bh=hide', 'noswapfile', 'ft=vkmap', 'nomodifiable', 'nomodified', 'nornu', 'nonu'],
           \}
 
@@ -104,7 +106,7 @@ fun! s:gen_layouts_reg()
     let l:init += ['call vkmap#print_lines(g:vkmap#menus[' . l:i . '])']
     let l:init += ['call setpos(".", [0,0,0])']
 
-    let l:opnAftr = ['redraw!']
+    let l:opnAftr = ['redraw']
     let l:opnAftr += ['call vkmap#arm_repeat(g:vkmap#menus[' . l:i . '])']
     let l:opnAftr += ['call vwm#close("' . l:layout.name . '")']
     let l:opnAftr += ['call vkmap#repeat()']
@@ -126,6 +128,8 @@ fun! s:gen_layouts_float()
   while l:i < l:l
 
     let l:def = g:vkmap#menus[l:i]
+    let l:height = exists('l:def.height') ? l:def.height : g:vkmap#height
+
     let l:layout = {}
     execute('let l:layout.name = "vkmap' . l:i . '"')
     let l:def.lid = l:layout.name
@@ -135,9 +139,9 @@ fun! s:gen_layouts_float()
           \  'x': g:vkmap#float_padding,
           \  'y': l:Y,
           \  'width': l:Width,
-          \  'height': g:vkmap#height,
-          \  'focusable': 0,
-          \  'focus': 0,
+          \  'height': l:height,
+          \  'focusable': 1,
+          \  'focus': 1,
           \  'set': ['nobl', 'bh=hide', 'noswapfile', 'ft=vkmap', 'nomodifiable', 'nomodified', 'nornu', 'nonu'],
           \}
 
@@ -145,7 +149,7 @@ fun! s:gen_layouts_float()
     let l:init += ['call vkmap#print_lines(g:vkmap#menus[' . l:i . '])']
     let l:init += ['call setpos(".", [0,0,0])']
 
-    let l:opnAftr = ['redraw!']
+    let l:opnAftr = ['redraw']
     let l:opnAftr += ['call vkmap#arm_repeat(g:vkmap#menus[' . l:i . '])']
     let l:opnAftr += ['call vwm#close("' . l:layout.name . '")']
     let l:opnAftr += ['call vkmap#repeat()']

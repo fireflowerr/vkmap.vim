@@ -3,7 +3,7 @@
 fun! vkmap#util#lookup(seq)
   for l:menu in g:vkmap#menus
 
-    if a:seq == l:menu.key || a:seq == l:menu.key_can
+    if a:seq == l:menu.key
       return l:menu
     endif
 
@@ -19,7 +19,7 @@ fun! vkmap#util#get_mapping(seq)
     return 0
   endif
 
-  return l:cmd[1 : l:l - 5]
+  return l:cmd
 endfun
 
 fun! vkmap#util#insert_char(str, char, qty)

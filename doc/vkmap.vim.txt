@@ -14,7 +14,7 @@ COMMANDS                                                       *vkmap-commands*
 CONFIGURATION                                             *vkmap-configuration*
 
 g:vkmap#height                                                 *g:vkmap#height*
-  Height of menu popup.
+  Default height of menu popup.
 
 g:vkmap#col_width                                           *g:vkmap#col_width*
   Width of each column cell.
@@ -33,12 +33,16 @@ g:vkmap#menus                                                   *g:vkmap#menus*
   strucutre:     >
     {
       'key': string,
+      'height[optional]: int,
       'maps': [dict]
     }
 
 g:vkmap#menu.key                                             *g:vkmap#menu.key*
   The key sequence that triggers this menu as it would be entered in the |map|
   command.
+
+g:vkmap#menu.height
+  Overrides |g:vkmap#height| for a specific menu definition.
 
 g:vkmap#menu.maps
   A list of key mappings that can be reached by appending a character to
