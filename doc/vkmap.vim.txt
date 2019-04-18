@@ -45,16 +45,16 @@ g:vkmap#menu.height
   Overrides |g:vkmap#height| for a specific menu definition.
 
 g:vkmap#menu.maps
-  A list of key mappings that can be reached by appending a character to
+  A list of key mappings that can be reached by appending a char sequence to
   |g:vkmap#menu.key|. Each key map has the following stucture:    >
     {
-      'key': char,
+      'key': string
       'dscpt': "A brief description"
       'leader[optional]': int
     }
 
 g:vkmap#map.key                                               *g:vkmap#map.key*
-  The character required to activate the represented mapping.
+  The string required to activate the represented mapping.
 
 g:vkmap#map.dscpt                                           *g:vkmap#map.dscpt*
   A brief description of what the mapping does.
@@ -62,6 +62,8 @@ g:vkmap#map.dscpt                                           *g:vkmap#map.dscpt*
 g:vkmap#map.leader[default=0]
   If true, the listing is assumed to open another vkmap menu and is
   distinguised via syntax highlighting.
+
+g:vkmap#map.mode[default='n']
 ==============================================================================
 EXAMPLES                                                       *vkmap-examples*
 //TODO - add examples

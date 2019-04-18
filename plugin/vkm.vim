@@ -56,16 +56,23 @@ fun! s:normalize_maps(maps)
   while l:i < l:l
     let l:map = a:maps[l:i]
 
-    if !exists(l:map.key)
+    if !exists('l:map.key')
       unlet l:map[l:i]
       let l:l -= 1
       echoerr "removed malformed map entry"
     endif
-    if !exists(l:map.leader)
+    if !exists('l:map.leader')
       let l:map.leader = 0
     endif
-    if !exists(l:map.dscpt)
+    if !exists('l:map.dscpt')
       let l:map.dscpt = ''
+    endif
+    if exists('l:map.mode')
+
+      if l:map.mode != 'v'
+        let l:map.mode = 'n'
+      endif
+
     endif
 
   endwhile
@@ -109,8 +116,8 @@ fun! s:gen_layouts_reg()
     let l:opnAftr = ['redraw']
     let l:opnAftr += ['call vkmap#arm_repeat(g:vkmap#menus[' . l:i . '])']
     let l:opnAftr += ['call vwm#close("' . l:layout.name . '")']
-    let l:opnAftr += ['call vkmap#repeat()']
-    execute('nnoremap ' . l:def.key . ' :VwmOpen ' . l:layout.name . '<CR>')
+    let l:opnAftr += ['call vkmap#repeat("' . l:def.mode . '")']
+    execute(l:def.mode . 'noremap ' . l:def.key . ' :<C-u>VwmOpen ' . l:layout.name . '<CR>')
 
     let l:bot.init = l:init
     let l:layout.bot = l:bot
@@ -164,5 +171,4 @@ fun! s:gen_layouts_float()
 endfun
 
 call s:init()
-command! -nargs=0 VkmReinit call s:init()
 au BufRead,BufNewFile __vkm* set filetype=vkmap
