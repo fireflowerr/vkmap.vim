@@ -152,8 +152,8 @@ fun! s:gen_layouts_float()
     let l:opnAftr = ['redraw']
     let l:opnAftr += ['call vkmap#arm_repeat(g:vkmap#menus[' . l:i . '])']
     let l:opnAftr += ['call vwm#close("' . l:layout.name . '")']
-    let l:opnAftr += ['call vkmap#repeat()']
-    execute('nnoremap ' . l:def.key . ' :VwmOpen ' . l:layout.name . '<CR>')
+    let l:opnAftr += ['call vkmap#repeat("' . l:def.mode . '")']
+    execute(l:def.mode . 'noremap ' . l:def.key . ' :<C-u>VwmOpen ' . l:layout.name . '<CR>')
 
     let l:float.init = l:init
     let l:layout.float = l:float

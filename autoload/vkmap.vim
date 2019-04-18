@@ -73,13 +73,22 @@ fun! vkmap#arm_repeat(def)
   let s:arm = a:def.key . nr2char(getchar())
 endfun
 
-fun! vkmap#repeat()
+fun! vkmap#repeat(mode)
   " Prevent endless recursion by mapping to an unprintable character which maps to the target
   " mapping
   let l:keys = substitute(s:arm, '<', '\\<', 'g')
   let l:cmd = vkmap#util#get_mapping(s:arm)
   if type(l:cmd) == 1
-    execute('nmap <buffer>  ' . s:arm)
-    call feedkeys('')
+    execute(a:mode . 'map <buffer>  ' . s:arm)
+    call feedkeys(s:get_mode_pre(a:mode) . '')
   endif
+
+endfun
+
+fun! s:get_mode_pre(mode)
+  if a:mode == 'v'
+    return '`<' . visualmode() . '`>'
+  endif
+
+  return ''
 endfun
