@@ -66,4 +66,4 @@ g:vkmap#map.leader[default=0]
 g:vkmap#map.mode[default='n']
 ==============================================================================
 EXAMPLES                                                       *vkmap-examples*
-//TODO - add examples
+see https://github.com/paroxayte/vkmap.vim#examples

@@ -111,6 +111,3 @@ try `hi NormalFloat guibg=**my_color**`
 will appear. At this point vim will bock until a key is pressed. Upon key press the window closes
 and the menu's "key" attribute will be rebroadcasted with the latest key press appended to it. The
 user is then free to continue adding keys to the sequence or finalize it.
-
-## Exaples
-see https://github.com/paroxayte/vkmap.vim#examples
