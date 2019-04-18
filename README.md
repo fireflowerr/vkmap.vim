@@ -40,17 +40,14 @@ let s:main = {
       \    {
       \      'key': 'o',
       \      'dscpt': 'toggle tree',
-      \      'leader': 0
       \    },
       \    {
       \      'key': 't',
       \      'dscpt': 'toggle terms',
-      \      'leader': 0
       \    },
       \    {
       \      'key': 'r',
       \      'dscpt': 'refresh',
-      \      'leader': 0
       \    }
       \  ]
       \}
@@ -63,37 +60,30 @@ let s:lsp = {
       \    {
       \      'key': 'd',
       \      'dscpt': 'definition',
-      \      'leader': 0
       \    },
       \    {
       \      'key': 'i',
       \      'dscpt': 'info',
-      \      'leader': 0
       \    },
       \    {
       \      'key': 'n',
       \      'dscpt': 'next',
-      \      'leader': 0
       \    },
       \    {
       \      'key': 'p',
       \      'dscpt': 'prev',
-      \      'leader': 0
       \    },
       \    {
       \      'key': 'f',
       \      'dscpt': 'find refs',
-      \      'leader': 0
       \    },
       \    {
       \      'key': 'r',
       \      'dscpt': 'rename',
-      \      'leader': 0
       \    },
       \    {
       \      'key': 'a',
       \      'dscpt': 'action',
-      \      'leader': 0
       \    },
       \  ]
       \}
