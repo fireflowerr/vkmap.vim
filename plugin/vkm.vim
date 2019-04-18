@@ -45,6 +45,7 @@ fun! s:normalize_root()
       call s:normalize_maps(l:menu.maps)
     endif
 
+    let l:i += 1
   endwhile
 
 endfun
@@ -75,12 +76,13 @@ fun! s:normalize_maps(maps)
 
     endif
 
+  let l:i += 1
   endwhile
 endfun
 
 
 fun! s:init()
-
+  call s:normalize_root()
   if g:vkmap#floating
     call s:gen_layouts_float()
   else
