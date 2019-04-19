@@ -109,6 +109,7 @@ fun! s:gen_layouts_reg()
     let l:bot = {
           \  'sz': l:height,
           \  'set': ['nobl', 'bh=hide', 'noswapfile', 'ft=vkmap', 'nomodifiable', 'nomodified', 'nornu', 'nonu'],
+          \  'focus': 1
           \}
 
     execute("let l:init = ['edit __vkm" . l:i . "__']")
