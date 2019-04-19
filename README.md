@@ -1,7 +1,7 @@
 # vkmap.vim
 
 A quick popup to help remember vim keymaps.
-![](./.github/expose.gif)
+![](https://gist.githubusercontent.com/paroxayte/925ae461adafe0bb5d4a86219f2abd7a/raw/dd2b992163d8e5b76650dc131b4dd77082b3c7f4/expose.gif)
 
 ## Features
 
