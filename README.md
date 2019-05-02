@@ -92,12 +92,20 @@ let g:vkmap#menus = [s:main, s:lsp]
 
 ## FAQ
 
+**Q**: There are already several plugins that do the same thing. Why choose vkmap?<Br/>
+**A**: When I made vkmap, I was not aware of these other plugins. However, there are some
+features/quriks vkmap has that, to me, makes it worth maintaining. Unlike other plugins, vkmap is
+very transparent. It does very little other than displaying a menu, yet this minimalism allows it
+to do MORE. Vkmap can accept multiple key presses between mappings (something that to my knowledge
+other plugins cannot). Vkmap does not add any unnecessary validation or overhead. It is effectively a transparent
+layer hidden in the typehead population.
+
 **Q**: How can I change the color of the floating menu in Nvim?<Br/>
 **A**: The color of floating windows is controlled by hi NormalFloat. To change the background color
 try `hi NormalFloat guibg=**my_color**`
 
 **Q**: How does vkmap.vim work?<Br/>
-**A**: After the delay has passed that distinguishes a new keypress from a sequence, the vkmap menu
+**A**: After the delay has passed that distinguishes a new keypress (see `:help timeoutlen`) from a sequence, the vkmap menu
 will appear. At this point vim will bock until a key is pressed. Upon key press the window closes
 and the menu's "key" attribute will be rebroadcasted with the latest key press appended to it. The
 user is then free to continue adding keys to the sequence or finalize it.
