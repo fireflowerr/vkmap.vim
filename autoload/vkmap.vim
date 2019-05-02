@@ -70,16 +70,37 @@ fun! s:format_entries(e)
 endfun
 
 fun! vkmap#arm_repeat(def)
-  let s:arm = a:def.key . nr2char(getchar())
+  let s:received = v:true
+  let s:arm = a:def.key
+  let s:arm = s:arm . nr2char(getchar())
+
+  call s:get_in_seq(function('s:end_in_seq'))
+  while s:received
+    let s:arm = s:arm . nr2char(getchar())
+  endwhile
+endfun
+
+fun! s:end_in_seq(timer)
+  let s:received = v:false
+  call feedkeys('')
+endfun
+
+fun! s:get_in_seq(callback)
+  call timer_start(&timeoutlen, a:callback)
 endfun
 
 fun! vkmap#repeat(mode)
   " Prevent endless recursion by mapping to an unprintable character which maps to the target
   " mapping
+  let l:len = strlen(s:arm) - 1
+  if s:arm[l:len] == ''
+    let s:arm = s:arm[0 : l:len - 1]
+  endif
+
   let l:keys = substitute(s:arm, '<', '\\<', 'g')
   let l:cmd = vkmap#util#get_mapping(s:arm)
   if type(l:cmd) == 1
-    execute(a:mode . 'map <buffer>  ' . s:arm)
+    execute(a:mode . 'map  ' . s:arm)
     call feedkeys(s:get_mode_pre(a:mode) . '')
   endif
 
