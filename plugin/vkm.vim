@@ -107,7 +107,7 @@ fun! s:gen_layouts_reg()
     let l:def.lid = l:layout.name
     let l:layout.cache = 0
     let l:bot = {
-          \  'sz': l:height,
+          \  'h_sz': l:height,
           \  'set': ['nobl', 'bh=hide', 'noswapfile', 'ft=vkmap', 'nomodifiable', 'nomodified', 'nornu', 'nonu'],
           \  'focus': 1
           \}
