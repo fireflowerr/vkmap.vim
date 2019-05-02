@@ -53,7 +53,7 @@ fun! s:format_entries(e)
 
     if g:vkmap#col_width + g:vkmap#inner_padding + strlen(l:line) > l:width
       let l:lines += [l:line]
-      let l:entry = vkmap#util#insert_char(l:entry, ' ', l:delta)
+      let l:entry = vkmap#util#insert_char(l:entry, ' ', l:delta + g:vkmap#inner_padding)
       let l:line = vkmap#util#insert_char(' ', ' ', g:vkmap#outer_padding) . entry
     else
       let l:entry = vkmap#util#insert_char(l:entry, ' ', l:delta + g:vkmap#inner_padding)
