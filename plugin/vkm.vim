@@ -108,7 +108,7 @@ fun! s:gen_layouts_reg()
     let l:layout.cache = 0
     let l:bot = {
           \  'h_sz': l:height,
-          \  'set': ['nobl', 'bh=hide', 'noswapfile', 'ft=vkmap', 'nomodifiable', 'nomodified', 'nornu', 'nonu'],
+          \  'set': ['nobl', 'bh=wipe', 'noswapfile', 'ft=vkmap', 'nomodifiable', 'nomodified', 'nornu', 'nonu'],
           \  'focus': 1
           \}
 
@@ -152,7 +152,7 @@ fun! s:gen_layouts_float()
           \  'height': l:height,
           \  'focusable': 1,
           \  'focus': 1,
-          \  'set': ['nobl', 'bh=hide', 'noswapfile', 'ft=vkmap', 'nomodifiable', 'nomodified', 'nornu', 'nonu'],
+          \  'set': ['nobl', 'bh=wipe', 'noswapfile', 'ft=vkmap', 'nomodifiable', 'nomodified', 'nornu', 'nonu'],
           \}
 
     execute("let l:init = ['edit __vkm" . l:i . "__']")
