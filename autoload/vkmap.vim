@@ -44,7 +44,11 @@ fun! vkmap#print_lines(def)
 endfun
 
 fun! s:format_entries(e)
-  let l:width = &columns - 2 * g:vkmap#outer_padding
+  if g:vkmap#pos == 'left' || g:vkmap#pos == 'right'
+    let l:width = exists('l:def.height') ? l:def.height : g:vkmap#height
+  else
+    let l:width = &columns - 2 * g:vkmap#outer_padding
+  endif
 
   let l:lines = []
   let l:line = vkmap#util#insert_char(' ', ' ', g:vkmap#outer_padding)

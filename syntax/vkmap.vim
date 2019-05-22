@@ -2,7 +2,6 @@ if exists("b:current_syntax")
   finish
 endif
 
-
 syntax sync fromstart
 
 syn match vkmapMap '\S' contained
@@ -17,4 +16,3 @@ hi def link vkMapB Character
 hi def link vkmapGroup Function
 
 let b:current_syntax = 'vkmap'
-

@@ -1,13 +1,11 @@
 " VisualKeymap interface
 
+" init globals {{{
 if !exists('g:vkmap#menus')
   let g:vkmap#menus = []
 endif
 if !exists('g:vkmap#col_width')
   let g:vkmap#col_width = 18
-endif
-if !exists('g:vkmap#floating') && exists('*nvim_open_win')
-  let g:vkmap#floating = 0
 endif
 " use vwm to handle window population
 if !exists('g:vwm#layouts')
@@ -25,7 +23,12 @@ endif
 if !exists('g:vkmap#float_padding')
   let g:vkmap#float_padding = 3
 endif
+if !exists('g:vkmap#pos')
+  let g:vkmap#pos = 'bot'
+endif
+"}}}
 
+"normalize layouts {{{
 fun! s:normalize_root()
 
   let l:i = 0
@@ -79,99 +82,110 @@ fun! s:normalize_maps(maps)
   let l:i += 1
   endwhile
 endfun
+"}}}
 
+"generate vwm layouts {{{
+fun! s:get_buf_node(pos)
+  if a:pos == 'float'
+    let l:Driver = function('s:gen_layouts_float')
+
+  elseif a:pos == 'top' || a:pos == 'bot' || a:pos == 'left' || a:pos == 'right'
+    let l:Driver = function('s:gen_layouts_reg')
+
+  else
+    echoerr "Invalid argument to fun s:get_buf_node"
+
+  endif
+
+  let l:l = len(g:vkmap#menus)
+  let l:i = 0
+  while l:i < l:l
+    let l:node = {}
+
+    call s:gen_root(l:node, l:i)
+    call l:Driver(l:node, a:pos)
+
+    let g:vwm#layouts += [l:node]
+
+    let l:i += 1
+  endwhile
+
+endfun
+
+
+fun! s:gen_root(node, i)
+
+  let l:def = g:vkmap#menus[a:i]
+
+  execute('let a:node.name = "vkmap' . a:i . '"')
+  " Store root dependent infromation in a temprorary var
+  execute("let a:node.tmp = ['edit __vkm" . a:i . "__']")
+  let a:node.tmp += ['call vkmap#print_lines(g:vkmap#menus[' . a:i . '])']
+  let a:node.tmp += ['call setpos(".", [0,0,0])']
+
+  let a:node.opnAftr = ['redraw']
+  let a:node.opnAftr += ['call vkmap#arm_repeat(g:vkmap#menus[' . a:i . '])']
+  let a:node.opnAftr += ['call vwm#close("' . a:node.name . '")']
+  let a:node.opnAftr += ['call vkmap#repeat(g:vkmap#menus[' . a:i . '].mode)']
+
+  " bind layout to key
+  execute(l:def.mode . 'noremap ' . l:def.key . ' :<C-u>VwmOpen ' . a:node.name . '<CR>')
+endfun
+
+fun! s:gen_layouts_reg(node, pos)
+
+  let a:node.cache = 0
+  let l:content = {
+        \  'set': ['nobl', 'bh=wipe', 'noswapfile', 'ft=vkmap', 'nomodifiable', 'nomodified', 'nornu', 'nonu'],
+        \  'focus': 1
+        \}
+  let l:content.init = a:node.tmp
+  unlet a:node.tmp
+
+  let l:height = exists('l:def.height') ? l:def.height : g:vkmap#height
+  if a:pos == 'top' || a:pos == 'bot'
+    let l:content.h_sz = l:height
+
+  else
+    let l:content.v_sz = l:height
+
+  endif
+
+  execute('let a:node.' . a:pos . ' = l:content')
+endfun
+
+fun! s:gen_layouts_float(node, pos)
+  let l:Y = function('vkmap#util#get_y')
+
+  let a:node.cache = 0
+  let l:Width = function('vkmap#util#get_width')
+  let l:height = exists('l:def.height') ? l:def.height : g:vkmap#height
+
+  let a:node.float = {
+        \  'x': g:vkmap#float_padding,
+        \  'y': l:Y,
+        \  'width': l:Width,
+        \  'height': l:height,
+        \  'focusable': 1,
+        \  'focus': 1,
+        \  'set': ['nobl', 'bh=wipe', 'noswapfile', 'ft=vkmap', 'nomodifiable', 'nomodified', 'nornu', 'nonu'],
+        \}
+  let a:node.float.init = a:node.tmp
+  unlet a:node.tmp
+
+endfun
+"}}}
 
 fun! s:init()
   call s:normalize_root()
-  if g:vkmap#floating
-    call s:gen_layouts_float()
-  else
-    call s:gen_layouts_reg()
-  endif
+  call s:get_buf_node(g:vkmap#pos)
 
+  " If vwm was sourced first, this is nessecary
   if exists('g:vwm#active')
     VwmReinit
   endif
 endfun
 
-fun! s:gen_layouts_reg()
-  let l:l = len(g:vkmap#menus)
-  let l:i = 0
-  while l:i < l:l
-
-    let l:def = g:vkmap#menus[l:i]
-    let l:height = exists('l:def.height') ? l:def.height : g:vkmap#height
-
-    let l:layout = {}
-    execute('let l:layout.name = "vkmap' . l:i . '"')
-    let l:def.lid = l:layout.name
-    let l:layout.cache = 0
-    let l:bot = {
-          \  'h_sz': l:height,
-          \  'set': ['nobl', 'bh=wipe', 'noswapfile', 'ft=vkmap', 'nomodifiable', 'nomodified', 'nornu', 'nonu'],
-          \  'focus': 1
-          \}
-
-    execute("let l:init = ['edit __vkm" . l:i . "__']")
-    let l:init += ['call vkmap#print_lines(g:vkmap#menus[' . l:i . '])']
-    let l:init += ['call setpos(".", [0,0,0])']
-
-    let l:opnAftr = ['redraw']
-    let l:opnAftr += ['call vkmap#arm_repeat(g:vkmap#menus[' . l:i . '])']
-    let l:opnAftr += ['call vwm#close("' . l:layout.name . '")']
-    let l:opnAftr += ['call vkmap#repeat("' . l:def.mode . '")']
-    execute(l:def.mode . 'noremap ' . l:def.key . ' :<C-u>VwmOpen ' . l:layout.name . '<CR>')
-
-    let l:bot.init = l:init
-    let l:layout.bot = l:bot
-    let l:layout.opnAftr = l:opnAftr
-    let g:vwm#layouts += [l:layout]
-    let l:i += 1
-  endwhile
-endfun
-
-fun! s:gen_layouts_float()
-  let l:Y = function('vkmap#util#get_y')
-
-  let l:l = len(g:vkmap#menus)
-  let l:i = 0
-  while l:i < l:l
-
-    let l:def = g:vkmap#menus[l:i]
-    let l:height = exists('l:def.height') ? l:def.height : g:vkmap#height
-
-    let l:layout = {}
-    execute('let l:layout.name = "vkmap' . l:i . '"')
-    let l:def.lid = l:layout.name
-    let l:layout.cache = 0
-    let l:Width = function('vkmap#util#get_width')
-    let l:float = {
-          \  'x': g:vkmap#float_padding,
-          \  'y': l:Y,
-          \  'width': l:Width,
-          \  'height': l:height,
-          \  'focusable': 1,
-          \  'focus': 1,
-          \  'set': ['nobl', 'bh=wipe', 'noswapfile', 'ft=vkmap', 'nomodifiable', 'nomodified', 'nornu', 'nonu'],
-          \}
-
-    execute("let l:init = ['edit __vkm" . l:i . "__']")
-    let l:init += ['call vkmap#print_lines(g:vkmap#menus[' . l:i . '])']
-    let l:init += ['call setpos(".", [0,0,0])']
-
-    let l:opnAftr = ['redraw']
-    let l:opnAftr += ['call vkmap#arm_repeat(g:vkmap#menus[' . l:i . '])']
-    let l:opnAftr += ['call vwm#close("' . l:layout.name . '")']
-    let l:opnAftr += ['call vkmap#repeat("' . l:def.mode . '")']
-    execute(l:def.mode . 'noremap ' . l:def.key . ' :<C-u>VwmOpen ' . l:layout.name . '<CR>')
-
-    let l:float.init = l:init
-    let l:layout.float = l:float
-    let l:layout.opnAftr = l:opnAftr
-    let g:vwm#layouts += [l:layout]
-    let l:i += 1
-  endwhile
-endfun
 
 call s:init()
 au BufRead,BufNewFile __vkm* set filetype=vkmap

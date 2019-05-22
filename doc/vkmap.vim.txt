@@ -25,8 +25,8 @@ g:vkmap#outer_padding                                   *g:vkmap#outer_padding*
 g:vkmap#inner_padding                                   *g:vkmap#inner_padding*
   Space between each column.
 
-g:vkmap#floating                                             *g:vkmap#floating*
-  Enables floating window layout on supported versions of Neovim.
+g:vkmap#pos[default=bot]                                          *g:vkmap#pos*
+  Supports bot, top, left, and right. Additionally supports float in Neovim.
 
 g:vkmap#menus                                                   *g:vkmap#menus*
   A list of mappings to display on keypress. Each menu has the following
